@@ -33,20 +33,20 @@ filetype off                  " required
 
 " mappings {
     " disable arrows {
-	nmap <up> <nop>
-	nmap <down> <nop>
-	nmap <left> <nop>
-	nmap <right> <nop>
+    nmap <up> <nop>
+    nmap <down> <nop>
+    nmap <left> <nop>
+    nmap <right> <nop>
 
-	function! EnableArrowKeys()
-	    nunmap <up>
-	    nunmap <down>
-	    nunmap <left>
-	    nunmap <right>
-	    echom 'Arrow keys are enabled in normal mode!'
-	endfunction
+    function! EnableArrowKeys()
+        nunmap <up>
+        nunmap <down>
+        nunmap <left>
+        nunmap <right>
+        echom 'Arrow keys are enabled in normal mode!'
+    endfunction
 
-	nnoremap <leader>aa :call EnableArrowKeys()<CR>
+    nnoremap <leader>aa :call EnableArrowKeys()<CR>
     "}
 
     nnoremap <leader>ev :vsplit $MYVIMRC<CR>
@@ -76,12 +76,16 @@ filetype off                  " required
 
 set autowriteall
 set modeline modelines=2
-set nu
+set number
 
 set textwidth=120
 highlight LineTooLong cterm=bold ctermbg=red guibg=LightYellow
 
 set scrolloff=4
+
+set tabstop=4
+set shiftwidth=4
+set expandtab
 
 " YouCompleteMe {
     let g:ycm_confirm_extra_conf = 0
@@ -115,12 +119,12 @@ set scrolloff=4
 
 " Also switch on highlighting the last used search pattern.
 if has("syntax") && (&t_Co > 2 || has("gui_running"))
-	syntax on
-	set hlsearch
+    syntax on
+    set hlsearch
 endif
 
 " projecting (experimental) {
-    source ~/proj.vim
+"    source ~/proj.vim
 "}
 
 " highlight current line for viewing log files
