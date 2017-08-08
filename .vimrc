@@ -90,7 +90,7 @@ set shiftwidth=4
 set expandtab
 
 function! GetFirstExpandedFilePath(extensionPattern)
-    return split(globpath("%:h", expand("%:t:r") . a:extensionPattern, 1))[0]
+    return get(split(globpath("%:h", expand("%:t:r") . a:extensionPattern, 1)), 0, "")
 endfun
 
 function! GetFilepathToSwitch()
