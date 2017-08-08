@@ -95,9 +95,9 @@ endfun
 
 function! GetFilepathToSwitch()
     if match(expand("%"), '\.c') > 0
-        return GetExpandedFile("*.h*")
+        return GetFirstExpandedFilePath("*.h*")
     elseif match(expand("%"), '\.h') > 0
-        return GetExpandedFile("*.c*")
+        return GetFirstExpandedFilePath("*.c*")
     else
         return ""
     endif
