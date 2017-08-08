@@ -10,6 +10,7 @@ filetype off                  " required
     " Plugin 'Valloric/YouCompleteMe'
     Plugin 'klen/python-mode'
     Plugin 'vim-scripts/DrawIt'
+    Plugin 'tpope/vim-fugitive'
     call vundle#end()            " required
     filetype plugin indent on    " required
 "}
