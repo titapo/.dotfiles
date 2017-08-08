@@ -57,6 +57,7 @@ filetype off                  " required
     nnoremap <leader>gg :g//
 
     vnoremap . :normal .
+    nnoremap <F4> :call SwitchBetweenHeaderAndSource()<CR>
     map <F5> <ESC>:setlocal spell! spelllang=en_us<RETURN><ESC>
     map <F10> :set paste<CR>
     map <F11> :set nopaste<CR>
@@ -87,6 +88,30 @@ set scrolloff=4
 set tabstop=4
 set shiftwidth=4
 set expandtab
+
+function! GetFirstExpandedFilePath(extensionPattern)
+    return split(globpath("%:h", expand("%:t:r") . a:extensionPattern, 1))[0]
+endfun
+
+function! GetFilepathToSwitch()
+    if match(expand("%"), '\.c') > 0
+        return GetExpandedFile("*.h*")
+    elseif match(expand("%"), '\.h') > 0
+        return GetExpandedFile("*.c*")
+    else
+        return ""
+    endif
+endfun
+
+function! SwitchBetweenHeaderAndSource()
+    let path = GetFilepathToSwitch()
+    if strlen(path) < 1
+        echo "No file found to switch!"
+        return
+    endif
+
+    execute "edit" path
+endfun
 
 " YouCompleteMe {
     let g:ycm_confirm_extra_conf = 0
