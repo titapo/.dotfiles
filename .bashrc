@@ -18,7 +18,7 @@ SCRIPTS_DIR=~/.scripts
 perform()
 {
     if [ -d $SCRIPTS_DIR ]; then
-        bash $SCRIPTS_DIR/$1
+        bash $SCRIPTS_DIR/$1 "${@:2}"
     else
         echo "Cannot perform operation: directory does not exist: $SCRIPTS_DIR!"
     fi
