@@ -57,6 +57,8 @@ filetype off                  " required
     nnoremap <leader>gg :g//
 
     vnoremap . :normal .
+    nnoremap <F2> :Ggrep <C-R>/<CR><CR>:cl<CR>
+    vnoremap <F2> y/<C-r>"<CR>:Ggrep <C-R>/<CR><CR>:cl<CR>
     nnoremap <F4> :call SwitchBetweenHeaderAndSource()<CR>
     map <F5> <ESC>:setlocal spell! spelllang=en_us<RETURN><ESC>
     map <F10> :set paste<CR>
