@@ -87,8 +87,8 @@ highlight LineTooLong cterm=bold ctermbg=red guibg=LightYellow
 
 set scrolloff=4
 
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set expandtab
 
 function! GetFirstExpandedFilePath(extensionPattern)
@@ -157,3 +157,5 @@ endif
 
 " highlight current line for viewing log files
 command! Log set cursorline | highlight CursorLine ctermbg=NONE cterm=NONE ctermfg=blue
+
+command! CountMatches :%s///gn
