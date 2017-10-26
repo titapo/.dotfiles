@@ -8,9 +8,11 @@ filetype off                  " required
     " let Vundle manage Vundle, required
     Plugin 'gmarik/Vundle.vim'
     " Plugin 'Valloric/YouCompleteMe'
-    Plugin 'klen/python-mode'
+    " Plugin 'klen/python-mode'
     Plugin 'vim-scripts/DrawIt'
     Plugin 'tpope/vim-fugitive'
+    Plugin 'peterhoeg/vim-qml'
+    Plugin 'junegunn/fzf.vim'
     call vundle#end()            " required
     filetype plugin indent on    " required
 "}
@@ -123,27 +125,33 @@ endfun
     let g:nerdtree_tabs_open_on_console_startup = 1
 "}
 
-" Python mode {
+" fzf.vim {
+    nnoremap <F6> :Files<CR>
+    nnoremap <leader>f :Files<CR>
+    nnoremap <leader>b :Buffers<CR>
+" }
 
-    " turn off folding:
-    let g:pymode_folding = 0
-
-    " auto-virtualenv detection:
-    let g:pymode_virtualenv = 1
-
-    let g:pymode_options_max_line_length = 142
-
-    " Web2py automagically imported stuffs can be added here:
-    let g:pymode_lint_options_pyflakes = {'builtins': 'T,request,db,response,current,XML,HTML,TABLE,TD,TR'}
-    let g:pymode_lint_options_pep8 = {'max_line_length': g:pymode_options_max_line_length}
-    let g:pymode_lint_options_pylint = {'max-line-length': g:pymode_options_max_line_length}
-
-    " Ignored error codes:
-    let g:pymode_lint_ignore=["E251", "E302", "E401"]
-
-    " run pymode on filewrite:
-    au BufWriteCmd *.py write || :PymodeLint
-"}
+" " Python mode {
+" 
+"     " turn off folding:
+"     let g:pymode_folding = 0
+" 
+"     " auto-virtualenv detection:
+"     let g:pymode_virtualenv = 1
+" 
+"     let g:pymode_options_max_line_length = 142
+" 
+"     " Web2py automagically imported stuffs can be added here:
+"     let g:pymode_lint_options_pyflakes = {'builtins': 'T,request,db,response,current,XML,HTML,TABLE,TD,TR'}
+"     let g:pymode_lint_options_pep8 = {'max_line_length': g:pymode_options_max_line_length}
+"     let g:pymode_lint_options_pylint = {'max-line-length': g:pymode_options_max_line_length}
+" 
+"     " Ignored error codes:
+"     let g:pymode_lint_ignore=["E251", "E302", "E401"]
+" 
+"     " run pymode on filewrite:
+"     au BufWriteCmd *.py write || :PymodeLint
+" "}
 
 " Also switch on highlighting the last used search pattern.
 if has("syntax") && (&t_Co > 2 || has("gui_running"))
