@@ -1,0 +1,2 @@
+CHANGE=${1:-5}
+xbacklight -inc $CHANGE
