@@ -28,7 +28,7 @@ perform()
 _performComplete()
 {
     local cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "$(find $SCRIPTS_DIR | xargs -I {} basename {})" -- $cur) )
+    COMPREPLY=( $(compgen -W "$(find $SCRIPTS_DIR/ | xargs -I {} basename {})" -- $cur) )
 }
 
 if [ -d $SCRIPTS_DIR ]; then
