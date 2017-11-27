@@ -10,7 +10,7 @@ GREEN="$(tput setaf 2)"
 RESET="$(tput sgr0)"
 
 alias ls='ls -ltra --color=auto'
-PS1='${GREEN}\u@\h \W${RESET}$ '
+PS1='\[${GREEN}\]\u@\h \W\[${RESET}\]$ '
 
 # ALLOW SCRIPTS TO BE EXECUTED BY 'perform command'
 SCRIPTS_DIR=~/.scripts
