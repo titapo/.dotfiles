@@ -7,12 +7,14 @@ filetype off                  " required
     call vundle#begin()
     " let Vundle manage Vundle, required
     Plugin 'gmarik/Vundle.vim'
-    " Plugin 'Valloric/YouCompleteMe'
-    " Plugin 'klen/python-mode'
-    Plugin 'vim-scripts/DrawIt'
-    Plugin 'tpope/vim-fugitive'
-    Plugin 'peterhoeg/vim-qml'
     Plugin 'junegunn/fzf.vim'
+    " Plugin 'klen/python-mode'
+    Plugin 'peterhoeg/vim-qml'
+    Plugin 'scrooloose/nerdtree'
+    Plugin 'tpope/vim-fugitive'
+    Plugin 'vim-scripts/DrawIt'
+    Plugin 'mgedmin/chelper.vim' " just a helper for legacy c
+    " Plugin 'Valloric/YouCompleteMe'
     call vundle#end()            " required
     filetype plugin indent on    " required
 "}
@@ -27,6 +29,9 @@ filetype off                  " required
 
     set laststatus=2
     " set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=0x\%04B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
+
+
+    command! LegacyMode set statusline=%<%f\ %h%m%r\ %{CTagInStatusLine()}%*%=%-14.(%l,%c%V%)\ %P
     set wildmenu
 "}
 
