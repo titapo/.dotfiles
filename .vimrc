@@ -122,6 +122,9 @@ function! SwitchBetweenHeaderAndSource()
     execute "edit" path
 endfun
 
+nnoremap <leader>ii I#include <><Esc>i
+inoremap <leader>ii #include <><Esc>i
+
 " YouCompleteMe {
     let g:ycm_confirm_extra_conf = 0
 "}
