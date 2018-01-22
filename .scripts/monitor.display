@@ -1,0 +1,3 @@
+#!/bin/bash
+
+notify-send --urgency=low "Monitor" "status changed"

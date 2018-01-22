@@ -1,0 +1,5 @@
+#!/bin/bash
+
+PERCENT=$(xbacklight -get)
+
+notify-send --urgency=low "Backlight" "$PERCENT%"

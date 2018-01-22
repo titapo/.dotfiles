@@ -1,0 +1,5 @@
+#!/bin/bash
+TITLE=$1
+MSG=$2
+URGENCY=low
+notify-send --urgency=$URGENCY "$TITLE" "$MSG"

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+VOLUME=$(ponymix --sink get-volume)
+MUTE_STR=""
+ponymix --sink is-muted && MUTE_STR="[ MUTED ]"
+
+notify-send --urgency=low "Volume" "$VOLUME% $MUTE_STR"
