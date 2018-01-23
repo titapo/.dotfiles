@@ -1,16 +1,18 @@
 
 # Displays available commands
 
-THIS_DIR=`dirname $0`
-for s in $THIS_DIR/*; do
-  if [ -L $s ]; then
-    echo "-  $(basename $s) -> $(realpath $s)"
-  elif [ -f $s ]; then
-    second_line=`cat $s | head -2 | tail -1`
-    if [[ $second_line == "#"* ]]; then
-      echo "-  $(basename $s)         $second_line"
-    else
-      echo "-  $(basename $s)"
+for directory in $(echo $PERFORM_SCRIPTS_DIR | tr ":" "\n"); do
+  for s in $directory/*; do
+    scriptname=$(basename $s)
+    if [ -L $s ]; then
+      echo "-  $scriptname -> $(realpath $s)"
+    elif [ -f $s ]; then
+      second_line=`cat $s | head -2 | tail -1`
+      if [[ $second_line == "#"* ]]; then
+        echo "-  $scriptname         $second_line"
+      else
+        echo "-  $scriptname"
+      fi
     fi
-  fi
+  done
 done
