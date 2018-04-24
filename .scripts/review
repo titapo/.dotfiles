@@ -1,0 +1,208 @@
+#!/bin/bash
+
+set -eu
+STATUS_FILE=".reviewstatus"
+REVIEWER_TOOL=gitk
+
+REVIEW_COMMAND=$1
+
+is_working_copy_clean()
+{
+  if [ -z "$(git status --short --untracked-files=no)" ]; then
+    echo 1
+  else
+    echo 0
+  fi
+}
+
+review_in_progress()
+{
+  if [ ! -f $STATUS_FILE ]; then
+    echo 0
+  else
+    echo 1
+  fi
+}
+
+start_review()
+{
+  local hashes_in=$1
+
+  if [ $(review_in_progress) == "1" ]; then
+    echo "A review is already in progress!"
+    echo "Remove $STATUS_FILE to finish it!"
+    exit 1
+  fi
+
+  echo "Starting review"
+  local hashes=""
+  for commit in $hashes_in; do
+    if [ -z $hashes ]; then
+      hashes="${commit}"
+    else
+      hashes="${hashes}\n${commit}"
+    fi
+  done
+
+  echo -e $hashes > $STATUS_FILE
+}
+
+review_number_of_remaining_commits()
+{
+  echo $(wc -l $STATUS_FILE | cut -f 1 -d " ") 
+}
+
+review_current_commit_hash()
+{
+  echo $(head -n 1 $STATUS_FILE) 
+}
+
+finish_review()
+{
+  if [ $(review_number_of_remaining_commits) -gt 0 ]; then
+    echo "Cannot finish the review! There are unviewed commits!"
+    exit 1
+  fi
+
+  rm $STATUS_FILE
+}
+
+review_consume_commit()
+{
+  sed -i '1d' $STATUS_FILE
+}
+
+display_review_status()
+{
+  if [ $(review_in_progress) == "1" ]; then
+    echo "Review in progress"
+    echo "Remaining commits:" $(review_number_of_remaining_commits)
+  else
+    echo "Review can be started"
+  fi
+}
+
+fixup_all_changes()
+{
+    local commit_hash=$(review_current_commit_hash)
+    echo "Fixup all changes $commit_hash"
+    git add -u
+    git commit --fixup $commit_hash
+}
+
+NEXT_ACTION="continue"
+
+ask_action()
+{
+
+  local is_clean=$(is_working_copy_clean)
+  echo "what to do?"
+  if [ $is_clean == 1 ]; then
+    echo "  ENTER -- continue with the next commit"
+  else
+    echo "  f     -- fixup all changes and continue"
+    echo "  d     -- show diff of current changes"
+  fi
+  echo "  a     -- again"
+  echo "  q     -- quit"
+
+  read action
+  case $action in
+    "")
+      if [ $is_clean == 0 ]; then
+        echo "Invalid action: continue"
+        echo "You have to do something with current changes"
+        NEXT_ACTION="ignore"
+      else
+        NEXT_ACTION="continue"
+      fi
+      ;;
+    "f")
+      if [ $is_clean == 1 ]; then
+        echo "Invalid action: $action"
+        NEXT_ACTION="ignore"
+      else
+        fixup_all_changes
+      fi
+      ;;
+    "d")
+      if [ $is_clean == 1 ]; then
+        echo "Invalid action: $action"
+      else
+        git diff
+      fi
+      NEXT_ACTION="ignore"
+      ;;
+    "a")
+      NEXT_ACTION="again"
+      ;;
+    "q")
+      NEXT_ACTION="quit"
+      exit 0
+      ;;
+    *)
+      echo "What is: $action ?"
+  esac
+
+}
+
+continue_review()
+{
+  if [ $(review_in_progress) == 0 ]; then
+    echo "There is no active review!"
+    exit 1
+  fi
+
+  while [ $(review_number_of_remaining_commits) -gt 0 ]
+  do
+    remaining_commits=$(review_number_of_remaining_commits)
+    echo "Remaining commits: $remaining_commits"
+    echo "Current commit to review: " $(review_current_commit_hash)
+    if [ $NEXT_ACTION != "ignore" ]; then
+      $REVIEWER_TOOL $(review_current_commit_hash)
+    fi
+
+    ask_action
+
+    if [ $NEXT_ACTION == "continue" ]; then
+      echo $(review_consume_commit)
+    fi
+  done
+
+  echo "Review finished!"
+  finish_review
+}
+
+
+case $REVIEW_COMMAND in
+  start)
+    REVIEW_FROM=$2
+    REVIEW_UNTIL=$(git log --format="%h" HEAD~..HEAD)
+    REVIEW_HASHES=$(git log --oneline --pretty=format:"%h" --reverse $REVIEW_FROM..$REVIEW_UNTIL)
+    echo "Until: $REVIEW_UNTIL"
+    echo
+    if [ $(is_working_copy_clean) == 0 ]; then
+      echo "Dirty working copy! Clean it and try again!"
+      exit 1
+    fi
+    start_review "$REVIEW_HASHES"
+    continue_review
+    exit 0
+    ;;
+  continue)
+    continue_review
+    exit 0
+    ;;
+  status)
+    display_review_status
+    exit 0
+    ;;
+  *)
+    echo "Unkown operation: ${REVIEW_COMMAND}"
+    exit 1
+esac
+
+
+
+
+
